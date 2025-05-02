@@ -14,9 +14,17 @@
 
 char	*ft_addbuf(char *stash, char *buf, ssize_t bytes_read)
 {
+	int		i;
+	int		stash_len;
 	char	*line;	
 
-	line
+	i = 0;
+	stash_len = ft_strlen(stash);
+	line = (char *) malloc (sizeof(char) * (stash_len + bytes_read + 1));
+	if (!line)
+		return(NULL);
+	while (i < stash_len)
+		line[i++] = *(stash++);
 }
 
 int	ft_found_newline(char *line)
