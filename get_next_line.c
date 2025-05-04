@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:49:43 by avieira-          #+#    #+#             */
-/*   Updated: 2025/05/01 23:56:38 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/05/04 02:26:12 by jesusoncrac      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ char	*ft_addbuf(char *stash, char *buf, ssize_t bytes_read)
 		return(NULL);
 	while (i < stash_len)
 		line[i++] = *(stash++);
+	line[i] = '\0';
+	return (line);
 }
 
 int	ft_found_newline(char *line)
@@ -50,7 +52,8 @@ char	*ft_writeline(char *line, char *buf)
 		if (bytes_read == 0)
 			return (0);  //what to do here since the end of file is reached?
 	}
-	return (ft_addbuf(line, buf, bytes_read));
+	// buff is always gonna be full, so need to check an else or something to read to buff again
+	return (ft_addbuf(line, buf, bytes_read)); .
 }
 char	*get_next_line(int fd)
 {
@@ -58,7 +61,5 @@ char	*get_next_line(int fd)
 
 	line = NULL;
 	while (!ft_found_newline(line))
-	{
 		line = ft_writeline(line, buf);
-	}
 }
