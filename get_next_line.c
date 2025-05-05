@@ -12,6 +12,17 @@
 
 #include "get_next_line.h"
 
+void	ft_ptrmove(char **buf, ssize_t bytes_read)
+{
+	while (i < bytes_read && **buf != '\n')
+	{
+		*buf++; // here im trying to change the actual ptr address, need to check if it works
+		i++;
+	}
+	if (i < bytes_read)
+		*buf++;
+}
+
 char	*ft_writeline(char *stash, char *buf, ssize_t bytes_read)
 {
 	int		i;
@@ -73,6 +84,6 @@ char	*get_next_line(int fd)
 		buf = ft_addbuf(line, buf, fd);
 		line = ft_writeline(line, buf, bytes_read);
 	}
-	ft_memset(buf);
+	ft_ptrmove(&buf);
 	return (line);;
 }
