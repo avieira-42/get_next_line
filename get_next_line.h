@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 12:26:14 by avieira-          #+#    #+#             */
-/*   Updated: 2025/05/05 13:03:08 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/05/05 18:35:46 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 # include <unistd.h>
 # include <aio.h>
 # include <stdlib.h>
-# define BUFFER_SIZE 8
+#ifndef BUFFER_SIZE
+# define BUFFER_SIZE 42
+#endif
 
 #endif
