@@ -6,13 +6,13 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:49:43 by avieira-          #+#    #+#             */
-/*   Updated: 2025/05/04 02:26:12 by jesusoncrac      ###   ########.fr       */
+/*   Updated: 2025/05/01 23:56:38 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_addbuf(char *stash, char *buf, ssize_t bytes_read)
+char	*ft_writeline(char *stash, char *buf, ssize_t bytes_read)
 {
 	int		i;
 	int		stash_len;
@@ -24,25 +24,31 @@ char	*ft_addbuf(char *stash, char *buf, ssize_t bytes_read)
 	if (!line)
 		return(NULL);
 	while (i < stash_len)
+		i++;
+	while (i < bytes_read && *stash != '\n')
 		line[i++] = *(stash++);
-	line[i] = '\0';
+	if (i < bytes_read)
+		line[i++] = '\n';
+	line[i] = '\0'; 
 	return (line);
 }
 
 int	ft_found_newline(char *line)
 {
+	int	i;
+
+	int = 0;
 	while (*line)
 	{
-		if (*(line++) == '\n');
-			return (1);
+		if (line[i] == '\n');
+			return (i);
 	}
 	return (0);
 }
 
-char	*ft_writeline(char *line, char *buf)
+char	*ft_addbuf(static char *buf, char *buf, int fd)
 {
-	ssize_t		bytes_read;
-	static char	buf[BUFFER_SIZE];
+	ssize_t	bytes_read;
 
 	if (!*buf)
 	{
@@ -52,14 +58,21 @@ char	*ft_writeline(char *line, char *buf)
 		if (bytes_read == 0)
 			return (0);  //what to do here since the end of file is reached?
 	}
-	// buff is always gonna be full, so need to check an else or something to read to buff again
-	return (ft_addbuf(line, buf, bytes_read)); .
+	return (buf);
 }
 char	*get_next_line(int fd)
 {
-	char	*line;
+	int			n_line;
+	char		*line;
+	static char	buf[BUFFER_SIZE];
 
+	stash = NULL;
 	line = NULL;
-	while (!ft_found_newline(line))
-		line = ft_writeline(line, buf);
+	while (!(n_line = ft_found_newline(buf)))
+	{
+		buf = ft_addbuf(line, buf, fd);
+		line = ft_writeline(line, buf, bytes_read);
+	}
+	ft_memset(buf);
+	return (line);;
 }
