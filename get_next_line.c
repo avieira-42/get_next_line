@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:49:43 by avieira-          #+#    #+#             */
-/*   Updated: 2025/05/06 18:41:07 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/05/07 00:02:01 by jesusoncrac      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,6 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-
 #include <stdio.h>
 #include <fcntl.h>
 
@@ -148,7 +147,7 @@ int	main(int argc, char **argv)
 
 	i = 0;
 	fd = open(argv[1], O_RDONLY);
-	while (i < 3)
+	while (*line)
 	{
 		line = get_next_line(fd);
 		printf("%s", line);
