@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:49:43 by avieira-          #+#    #+#             */
-/*   Updated: 2025/05/06 14:00:39 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/05/06 18:41:07 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ int	ft_strlen(char *str)
 	return (i);
 }
 
-void	ft_bufmove(char *buf, ssize_t bytes_read)
+void	ft_bytemove(char *bytes)
 {
 	char	*tmp;
 	ssize_t	i;
 
 	i = 0;
-	tmp = buf;
-	while (buf[i] != '\n')
+	tmp = bytes;
+	while (bytes[i] != '\n')
 	{
 		tmp++;
 		i++;
@@ -38,9 +38,9 @@ void	ft_bufmove(char *buf, ssize_t bytes_read)
 	tmp++;
 	while (*tmp)
 	{
-		buf[i++] = *(tmp++);
+		bytes[i++] = *(tmp++);
 	}
-	buf[i] = '\0';
+	bytes[i] = '\0';
 }
 
 char	*ft_writeline(char *stash)
@@ -75,7 +75,7 @@ int	ft_found_newline(char *buf, ssize_t bytes_read)
 	return (0);
 }
 
-char	*ft_addbuf(char *stash, char *buf, ssize_t bytes_read)
+	char	*ft_addbytes(char *stash, char *buf, ssize_t bytes_read)
 {
 	ssize_t	i;
 	ssize_t j;
@@ -101,40 +101,38 @@ char	*ft_addbuf(char *stash, char *buf, ssize_t bytes_read)
 	return (bytes);
 }
 
-char	*ft_resetstash(void)
+char	*ft_bytes_init(void)
 {
 	char	*bytes;
 
-	bytes = (char *) malloc(sizeof(char) * 1);
+	bytes = (char *) malloc(sizeof(char));
 	if (!bytes)
 		return (NULL);
-	bytes[0] = '\0';
 	return (bytes);
 }
 
 char	*get_next_line(int fd)
 {
 	ssize_t		bytes_read;
-	char		*bytes;
+	static char	*bytes;
 	char		*line;
-	static char	buf[BUFFER_SIZE];
+	char		buf[BUFFER_SIZE];
 
 	line = NULL;
 	bytes_read = 0;
-	bytes = ft_resetstash();
-	if (*buf)
-		bytes = ft_addbuf(bytes, buf, BUFFER_SIZE);
+	if (bytes == NULL)
+		bytes = ft_bytes_init();
 	while (!ft_found_newline(buf, bytes_read))
 	{
 		bytes_read = read(fd, buf, BUFFER_SIZE);
 		if (bytes_read == -1)
 			return (NULL);
 		if (bytes_read == 0)
-			return (0);  //what to do here since the end of file is reached?
-		bytes = ft_addbuf(bytes, buf, bytes_read);
+			break; //what to do here since the end of file is reached?
+		bytes = ft_addbytes(bytes, buf, bytes_read);
 	}
-	ft_bufmove(buf, bytes_read);
 	line = ft_writeline(bytes);
+	ft_bytemove(bytes);
 	return (line);
 }
 
@@ -150,7 +148,7 @@ int	main(int argc, char **argv)
 
 	i = 0;
 	fd = open(argv[1], O_RDONLY);
-	while (i < 20)
+	while (i < 3)
 	{
 		line = get_next_line(fd);
 		printf("%s", line);
