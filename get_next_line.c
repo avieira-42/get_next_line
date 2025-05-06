@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:49:43 by avieira-          #+#    #+#             */
-/*   Updated: 2025/05/06 13:07:00 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/05/06 14:00:39 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ int	main(int argc, char **argv)
 
 	i = 0;
 	fd = open(argv[1], O_RDONLY);
-	while (i < 10)
+	while (i < 20)
 	{
 		line = get_next_line(fd);
 		printf("%s", line);
