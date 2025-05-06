@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:49:43 by avieira-          #+#    #+#             */
-/*   Updated: 2025/05/05 18:46:20 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/05/06 13:07:00 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	ft_bufmove(char *buf, ssize_t bytes_read)
 	}
 	i = 0;;
 	tmp++;
-	while (*tmp != '\n')
+	while (*tmp)
 	{
 		buf[i++] = *(tmp++);
 	}
