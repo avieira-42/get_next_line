@@ -6,21 +6,11 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:49:43 by avieira-          #+#    #+#             */
-/*   Updated: 2025/05/07 00:02:01 by jesusoncrac      ###   ########.fr       */
+/*   Updated: 2025/05/07 15:02:49 by jesusoncrac      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-int	ft_strlen(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
 
 void	ft_bytemove(char *bytes)
 {
@@ -34,7 +24,7 @@ void	ft_bytemove(char *bytes)
 		tmp++;
 		i++;
 	}
-	i = 0;;
+	i = 0;
 	tmp++;
 	while (*tmp)
 	{
@@ -50,7 +40,9 @@ char	*ft_writeline(char *stash)
 	char	*line;	
 
 	i = 0;
-	stash_len = ft_strlen(stash);
+	stash_len = 0;
+	if (*stash)
+		stash_len = ft_strlen(stash);
 	line = (char *) malloc (sizeof(char) * (stash_len + 1));
 	if (!line)
 		return (NULL);
@@ -75,10 +67,10 @@ int	ft_found_newline(char *buf, ssize_t bytes_read)
 	return (0);
 }
 
-	char	*ft_addbytes(char *stash, char *buf, ssize_t bytes_read)
+char	*ft_addbytes(char *stash, char *buf, ssize_t bytes_read)
 {
 	ssize_t	i;
-	ssize_t j;
+	ssize_t	j;
 	char	*bytes;
 
 	i = 0;
@@ -101,16 +93,6 @@ int	ft_found_newline(char *buf, ssize_t bytes_read)
 	return (bytes);
 }
 
-char	*ft_bytes_init(void)
-{
-	char	*bytes;
-
-	bytes = (char *) malloc(sizeof(char));
-	if (!bytes)
-		return (NULL);
-	return (bytes);
-}
-
 char	*get_next_line(int fd)
 {
 	ssize_t		bytes_read;
@@ -128,14 +110,14 @@ char	*get_next_line(int fd)
 		if (bytes_read == -1)
 			return (NULL);
 		if (bytes_read == 0)
-			break; //what to do here since the end of file is reached?
+			break ;
 		bytes = ft_addbytes(bytes, buf, bytes_read);
 	}
 	line = ft_writeline(bytes);
 	ft_bytemove(bytes);
 	return (line);
 }
-
+/*
 #include <stdio.h>
 #include <fcntl.h>
 
@@ -147,11 +129,15 @@ int	main(int argc, char **argv)
 
 	i = 0;
 	fd = open(argv[1], O_RDONLY);
+	line = get_next_line(fd);
+	printf("%s", line);
+	i++;	
 	while (*line)
 	{
+		free(line);
 		line = get_next_line(fd);
 		printf("%s", line);
 		i++;	
 	}
 	free(line);
-}
+}*/
