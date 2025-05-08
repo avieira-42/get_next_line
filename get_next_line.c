@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:49:43 by avieira-          #+#    #+#             */
-/*   Updated: 2025/05/07 15:02:49 by jesusoncrac      ###   ########.fr       */
+/*   Updated: 2025/05/08 01:16:51 by jesusoncrac      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,10 @@ char	*get_next_line(int fd)
 	{
 		bytes_read = read(fd, buf, BUFFER_SIZE);
 		if (bytes_read == -1)
+		{
+			free(bytes);
 			return (NULL);
+		}
 		if (bytes_read == 0)
 			break ;
 		bytes = ft_addbytes(bytes, buf, bytes_read);
@@ -117,7 +120,7 @@ char	*get_next_line(int fd)
 	ft_bytemove(bytes);
 	return (line);
 }
-/*
+
 #include <stdio.h>
 #include <fcntl.h>
 
@@ -140,4 +143,4 @@ int	main(int argc, char **argv)
 		i++;	
 	}
 	free(line);
-}*/
+}
