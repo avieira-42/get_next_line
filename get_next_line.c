@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:49:43 by avieira-          #+#    #+#             */
-/*   Updated: 2025/05/08 01:16:51 by jesusoncrac      ###   ########.fr       */
+/*   Updated: 2025/05/08 16:57:52 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	ft_bytemove(char *bytes)
 	char	*tmp;
 	ssize_t	i;
 
+	if (bytes == NULL)
+		return ;
 	i = 0;
 	tmp = bytes;
 	while (bytes[i] != '\n')
@@ -101,10 +103,10 @@ char	*get_next_line(int fd)
 	char		buf[BUFFER_SIZE];
 
 	line = NULL;
-	bytes_read = 0;
+	bytes_read = 1;
 	if (bytes == NULL)
 		bytes = ft_bytes_init();
-	while (!ft_found_newline(buf, bytes_read))
+	while (bytes_read > 0)
 	{
 		bytes_read = read(fd, buf, BUFFER_SIZE);
 		if (bytes_read == -1)
@@ -117,6 +119,11 @@ char	*get_next_line(int fd)
 		bytes = ft_addbytes(bytes, buf, bytes_read);
 	}
 	line = ft_writeline(bytes);
+	if (bytes_read == 0)
+	{
+		free(bytes);
+		bytes = NULL;
+	}
 	ft_bytemove(bytes);
 	return (line);
 }

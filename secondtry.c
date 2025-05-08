@@ -1,42 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   secondtry.c                                        :+:      :+:    :+:   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 00:17:36 by jesusoncrac       #+#    #+#             */
-/*   Updated: 2025/05/08 02:04:01 by jesusoncrac      ###   ########.fr       */
+/*   Updated: 2025/05/08 16:24:31 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_linetrim(bytes)
+static char	*ft_linetrim(char *bytes)
 {
 	int		len;
 	char *trimed;
 
-	while (bytes[i] && bytes[i] != '\n')
+	while (bytes[len] && bytes[len] != '\n')
 		len++;
 	trimed = ft_substr(ft_strchr(bytes, '\n'), 0, len);
 	free(bytes);
 	return (trimed);
 }
 
-char	*writeline(char *bytes)
+static char	*ft_writeline(char *bytes)
 {
 	int		len;
 	char	*line;
 
-	// find the len until the first \n
-	while (bytes[i] && bytes[i] != '\n')
+	len = 0;
+	while (bytes[len] && bytes[len] != '\n')
 		len++;
-	// make a substring until the first \n
+	bytes[len] = '\n';
 	return (ft_substr(bytes, 0, len));
 }
 
-char	*ft_catbuf(char *bytes, char *buf)
+static char	*ft_catbuf(char *bytes, char *buf)
 {
 	char	*catbuf;
 	
@@ -44,7 +44,7 @@ char	*ft_catbuf(char *bytes, char *buf)
 	free(bytes);
 	return (catbuf);
 }
-char	*ft_readline(int fd, char *bytes)
+static char	*ft_readline(int fd, char *bytes)
 {
 	ssize_t		bytes_read;
 	char		*buf;
@@ -54,7 +54,7 @@ char	*ft_readline(int fd, char *bytes)
 	buf = (char *) calloc(BUFFER_SIZE + 1, sizeof(char));
 	if (!buf)
 		return (NULL);
-	while (byte_read > 0)
+	while (bytes_read > 0)
 	{
 		bytes_read = read(fd, buf, BUFFER_SIZE);
 		if (bytes_read == - 1)
@@ -63,8 +63,8 @@ char	*ft_readline(int fd, char *bytes)
 			return (NULL);
 		}
 		bytes = ft_catbuf(bytes, buf);
-		if (ft_strchr(buf, '\n')
-				break ;
+		if (ft_strchr(buf, '\n'))
+			break ;
 	}
 	free(buf);
 	return (bytes);
@@ -75,12 +75,29 @@ char	*get_next_line(int fd)
 	char		*line;
 	static char	*bytes;
 
-	// read n bytes until a new line is found	
 	bytes = ft_readline(fd, bytes);
-	// copy the read info until the \n to a new variable
 	line = ft_writeline(bytes);
-	// save the extra info for the next function call
 	bytes = ft_linetrim(bytes);
-	// return the entire line 
+	if (!*bytes)
+		free(bytes);
 	return (line);
+}
+
+#include <stdio.h>
+#include <fcntl.h>
+
+int	main(int argc, char **argv)
+{
+	int		i;
+	int		fd;
+	char	*line;
+
+	i = 0;
+	fd = open(argv[1], O_RDONLY);
+	while (20)
+	{
+		line = get_next_line(fd);
+		printf("%s", line);
+		i++;	
+	}
 }
