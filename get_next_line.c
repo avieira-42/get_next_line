@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:49:43 by avieira-          #+#    #+#             */
-/*   Updated: 2025/05/08 16:57:52 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/05/08 19:15:33 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,11 +102,13 @@ char	*get_next_line(int fd)
 	char		*line;
 	char		buf[BUFFER_SIZE];
 
+	if (fd < 0)
+		return (NULL);
 	line = NULL;
-	bytes_read = 1;
+	bytes_read = 0;
 	if (bytes == NULL)
 		bytes = ft_bytes_init();
-	while (bytes_read > 0)
+	while (!ft_found_newline(buf, bytes_read))
 	{
 		bytes_read = read(fd, buf, BUFFER_SIZE);
 		if (bytes_read == -1)
@@ -119,12 +121,10 @@ char	*get_next_line(int fd)
 		bytes = ft_addbytes(bytes, buf, bytes_read);
 	}
 	line = ft_writeline(bytes);
-	if (bytes_read == 0)
-	{
+	if (!*line)
 		free(bytes);
-		bytes = NULL;
-	}
-	ft_bytemove(bytes);
+	else
+		ft_bytemove(bytes);
 	return (line);
 }
 
