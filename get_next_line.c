@@ -6,52 +6,32 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:49:43 by avieira-          #+#    #+#             */
-/*   Updated: 2025/05/08 01:16:51 by jesusoncrac      ###   ########.fr       */
+/*   Updated: 2025/05/09 00:13:46 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	ft_bytemove(char *bytes)
+void	ft_bytemove(char *buf)
 {
 	char	*tmp;
 	ssize_t	i;
 
 	i = 0;
-	tmp = bytes;
-	while (bytes[i] != '\n')
+	tmp = buf;
+	while (buf[i] != '\n' && buf[i])
 	{
 		tmp++;
 		i++;
 	}
+	if (buf[i] == '\n')
+		tmp++;
 	i = 0;
-	tmp++;
 	while (*tmp)
 	{
-		bytes[i++] = *(tmp++);
+		buf[i++] = *(tmp++);
 	}
-	bytes[i] = '\0';
-}
-
-char	*ft_writeline(char *stash)
-{
-	int		i;
-	int		stash_len;
-	char	*line;	
-
-	i = 0;
-	stash_len = 0;
-	if (*stash)
-		stash_len = ft_strlen(stash);
-	line = (char *) malloc (sizeof(char) * (stash_len + 1));
-	if (!line)
-		return (NULL);
-	while (i < stash_len && *stash != '\n')
-		line[i++] = *(stash++);
-	if (i < stash_len)
-		line[i++] = '\n';
-	line[i] = '\0';
-	return (line);
+	buf[i] = '\0';
 }
 
 int	ft_found_newline(char *buf, ssize_t bytes_read)
@@ -60,64 +40,61 @@ int	ft_found_newline(char *buf, ssize_t bytes_read)
 
 	i = 0;
 	while (i < bytes_read)
-	{
 		if (buf[i++] == '\n')
 			return (1);
-	}
 	return (0);
 }
 
-char	*ft_addbytes(char *stash, char *buf, ssize_t bytes_read)
+char	*ft_addbytes(char *stash, char *buf)
 {
 	ssize_t	i;
 	ssize_t	j;
-	char	*bytes;
+	char	*line;
 
 	i = 0;
 	j = 0;
-	if (!stash || !buf)
-		return (NULL);
-	bytes = (char *) malloc(sizeof(char) * (ft_strlen(stash) + bytes_read + 1));
-	while (stash[i])
+	line = (char *) malloc(sizeof(char) * (ft_strlen(stash) + ft_strlen(buf) + 1));
+	if (!line)
+		return (free(stash), NULL);
+	while (stash && stash[i])
 	{
-		bytes[i] = stash[i];
+		line[i] = stash[i];
 		i++;
 	}
-	free(stash);
-	while (j < bytes_read)
+	while (buf[j])
 	{
-		bytes[i + j] = buf[j];
+		line[i + j] = buf[j];
+		if (line[i + j] == '\n')
+			break ;
 		j++;
 	}
-	bytes[i + j] = '\0';
-	return (bytes);
+	line[i + j + 1] = '\0';
+	return (free(stash), line);
 }
 
 char	*get_next_line(int fd)
 {
-	ssize_t		bytes_read;
-	static char	*bytes;
-	char		*line;
-	char		buf[BUFFER_SIZE];
+	ssize_t			bytes_read;
+	char			*line;
+	static char		buf[BUFFER_SIZE + 1];
 
 	line = NULL;
 	bytes_read = 0;
-	if (bytes == NULL)
-		bytes = ft_bytes_init();
-	while (!ft_found_newline(buf, bytes_read))
+	while (!ft_found_newline(line, bytes_read))
 	{
-		bytes_read = read(fd, buf, BUFFER_SIZE);
-		if (bytes_read == -1)
+		if (!*buf)
 		{
-			free(bytes);
-			return (NULL);
+			bytes_read = read(fd, buf, BUFFER_SIZE);
+			if (bytes_read == -1)
+				return (free(line), NULL);
+			if (bytes_read == 0)
+				break ;
 		}
-		if (bytes_read == 0)
-			break ;
-		bytes = ft_addbytes(bytes, buf, bytes_read);
+		line = ft_addbytes(line, buf);
+		if (!line)
+			return (NULL);
+		ft_bytemove(buf);
 	}
-	line = ft_writeline(bytes);
-	ft_bytemove(bytes);
 	return (line);
 }
 
@@ -130,17 +107,13 @@ int	main(int argc, char **argv)
 	int		fd;
 	char	*line;
 
+	(void)argc;
 	i = 0;
 	fd = open(argv[1], O_RDONLY);
-	line = get_next_line(fd);
-	printf("%s", line);
-	i++;	
-	while (*line)
+	while ((line = get_next_line(fd)))
 	{
-		free(line);
-		line = get_next_line(fd);
 		printf("%s", line);
-		i++;	
+		free(line);
 	}
 	free(line);
 }
