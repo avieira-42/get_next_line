@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 22:11:13 by avieira-          #+#    #+#             */
-/*   Updated: 2025/05/08 23:41:23 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/05/09 02:04:19 by jesusoncrac      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	ft_strlen(char *str)
 
 	i = 0;
 	if (!str)
-		return(0);
+		return (0);
 	while (str[i] && str[i] != '\n')
 		i++;
 	if (str[i] == '\n')

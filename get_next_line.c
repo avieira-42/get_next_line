@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:49:43 by avieira-          #+#    #+#             */
-/*   Updated: 2025/05/09 00:13:46 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/05/09 02:15:53 by jesusoncrac      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,13 @@ void	ft_bytemove(char *buf)
 	buf[i] = '\0';
 }
 
-int	ft_found_newline(char *buf, ssize_t bytes_read)
+int	ft_found_newline(char *line)
 {
 	int	i;
 
 	i = 0;
-	while (i < bytes_read)
-		if (buf[i++] == '\n')
+	while (line && line[i])
+		if (line[i++] == '\n')
 			return (1);
 	return (0);
 }
@@ -53,7 +53,7 @@ char	*ft_addbytes(char *stash, char *buf)
 
 	i = 0;
 	j = 0;
-	line = (char *) malloc(sizeof(char) * (ft_strlen(stash) + ft_strlen(buf) + 1));
+	line = (char *) malloc((ft_strlen(stash) + ft_strlen(buf) + 1));
 	if (!line)
 		return (free(stash), NULL);
 	while (stash && stash[i])
@@ -64,11 +64,11 @@ char	*ft_addbytes(char *stash, char *buf)
 	while (buf[j])
 	{
 		line[i + j] = buf[j];
-		if (line[i + j] == '\n')
-			break ;
 		j++;
+		if (line[i + j - 1] == '\n')
+			break ;
 	}
-	line[i + j + 1] = '\0';
+	line[i + j] = '\0';
 	return (free(stash), line);
 }
 
@@ -78,9 +78,10 @@ char	*get_next_line(int fd)
 	char			*line;
 	static char		buf[BUFFER_SIZE + 1];
 
+	if (fd < 0 || BUFFER_SIZE < 1)
+		return (NULL);
 	line = NULL;
-	bytes_read = 0;
-	while (!ft_found_newline(line, bytes_read))
+	while (!ft_found_newline(line))
 	{
 		if (!*buf)
 		{
