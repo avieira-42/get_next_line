@@ -27,7 +27,8 @@ void	ft_removeline(char *line)
 	i = 0;
 	while (*ptr)
 		line[i++] = *(ptr++);
-	line[i] = '\0';
+	while (line[i])
+		line[i] = '\0';
 }
 
 char	*ft_writeline(char *line, char *buf)
@@ -83,29 +84,29 @@ char	*get_next_line(int fd)
 	}
 	return (line);
 }
-
+/*
 #include <stdio.h>
 #include <fcntl.h>
 
 int	main(int argc, char **argv)
 {
-	(void) argc;
-	int	fd1;
-	int	fd2;
-	char	*line;
+(void) argc;
+int	fd1;
+int	fd2;
+char	*line;
 
-	fd1 = open(argv[1], O_RDONLY);
-	while ((line = get_next_line(fd1)))
-	{
-		printf("%s", line);
-		free(line);
-	}
-	free(line);
-	fd2 = open(argv[2], O_RDONLY);
-	while ((line = get_next_line(fd2)))
-	{
-		printf("%s", line);
-		free(line);
-	}
-	free(line);
+fd1 = open(argv[1], O_RDONLY);
+while ((line = get_next_line(fd1)))
+{
+printf("%s", line);
+free(line);
 }
+free(line);
+fd2 = open(argv[2], O_RDONLY);
+while ((line = get_next_line(fd2)))
+{
+printf("%s", line);
+free(line);
+}
+free(line);
+}*/

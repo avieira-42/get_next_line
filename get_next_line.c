@@ -27,7 +27,8 @@ void	ft_bytemove(char *buf)
 	i = 0;
 	while (*ptr)
 		buf[i++] = *(ptr++);
-	buf[i] = '\0';
+	while (buf[i])
+		buf[i++] = '\0';
 }
 
 int	ft_found_newline(char *line)
@@ -88,7 +89,7 @@ char	*get_next_line(int fd)
 	}
 	return (line);
 }
-
+/*
 #include <stdio.h>
 #include <fcntl.h>
 
@@ -105,4 +106,4 @@ int	main(int argc, char **argv)
 		free(line);
 	}
 	free(line);
-}
+}*/
