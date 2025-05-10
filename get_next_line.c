@@ -88,7 +88,7 @@ char	*get_next_line(int fd)
 	}
 	return (line);
 }
-/*
+
 #include <stdio.h>
 #include <fcntl.h>
 
@@ -99,10 +99,10 @@ int	main(int argc, char **argv)
 
 	(void)argc;
 	fd = open(argv[1], O_RDONLY);
-	while (line = get_next_line(fd))
+	while ((line = get_next_line(fd)))
 	{
 		printf("%s", line);
 		free(line);
 	}
 	free(line);
-}*/
+}

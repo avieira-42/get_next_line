@@ -83,21 +83,29 @@ char	*get_next_line(int fd)
 	}
 	return (line);
 }
-/*
+
 #include <stdio.h>
 #include <fcntl.h>
 
 int	main(int argc, char **argv)
 {
 	(void) argc;
-	int	fd;
+	int	fd1;
+	int	fd2;
 	char	*line;
 
-	fd = open(argv[1], O_RDONLY);
-	while (line = get_next_line(fd))
+	fd1 = open(argv[1], O_RDONLY);
+	while ((line = get_next_line(fd1)))
 	{
 		printf("%s", line);
 		free(line);
 	}
 	free(line);
-}*/
+	fd2 = open(argv[2], O_RDONLY);
+	while ((line = get_next_line(fd2)))
+	{
+		printf("%s", line);
+		free(line);
+	}
+	free(line);
+}
