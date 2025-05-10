@@ -1,90 +1,85 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/01 16:49:43 by avieira-          #+#    #+#             */
-/*   Updated: 2025/05/10 00:48:01 by jesusoncrac      ###   ########.fr       */
+/*   Created: 2025/05/09 17:22:17 by jesusoncrac       #+#    #+#             */
+/*   Updated: 2025/05/10 01:11:58 by jesusoncrac      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
-void	ft_bytemove(char *buf)
+void	ft_removeline(char *line)
 {
+	int		i;
 	char	*ptr;
-	ssize_t	i;
 
 	i = 0;
-	ptr = buf;
-	while (buf[i] != '\n' && buf[i])
+	ptr = line;
+	while (line[i] != '\n' && line[i])
 		i++;
 	ptr += i;
-	if (buf[i] == '\n')
+	if (line[i] == '\n')
 		ptr++;
 	i = 0;
 	while (*ptr)
-		buf[i++] = *(ptr++);
-	buf[i] = '\0';
+		line[i++] = *(ptr++);
+	line[i] = '\0';
+}
+
+char	*ft_writeline(char *line, char *buf)
+{
+	int		len;
+	char	*new_line;
+	char	*l_ptr;
+	char	*nl_ptr;
+
+	l_ptr = line;
+	len = ft_nlen(line) + ft_nlen(buf);
+	new_line = (char *) malloc(sizeof(char) * (len + 1));
+	if (!new_line)
+		return (free(line), NULL);
+	nl_ptr = new_line;
+	while (l_ptr && *l_ptr)
+		*(nl_ptr++) = *(l_ptr++);
+	while (nl_ptr - new_line < len)
+		*(nl_ptr++) = *(buf++);
+	*nl_ptr = '\0';
+	return (free(line), new_line);
 }
 
 int	ft_found_newline(char *line)
 {
-	int	i;
-
-	i = 0;
-	while (line && line[i])
-		if (line[i++] == '\n')
+	while (line && *line)
+		if (*(line++) == '\n')
 			return (1);
 	return (0);
-}
-
-char	*ft_addbytes(char *stash, char *buf)
-{
-	int		len;
-	char	*line;
-	char	*l_ptr;
-	char	*s_ptr;
-
-	s_ptr = stash;
-	len = ft_nlen(stash) + ft_nlen(buf);
-	line = (char *) malloc(sizeof(char) * (len + 1));
-	if (!line)
-		return (free(stash), NULL);
-	l_ptr = line;
-	while (s_ptr && *s_ptr)
-		*(l_ptr++) = *(s_ptr++);
-	while ((l_ptr - line < len))
-		*(l_ptr++) = *(buf++);
-	*l_ptr = '\0';
-	return (free(stash), line);
 }
 
 char	*get_next_line(int fd)
 {
 	ssize_t			bytes_read;
 	char			*line;
-	static char		buf[BUFFER_SIZE + 1];
+	static char		buf[1024][BUFFER_SIZE + 1];
 
-	if (fd < 0 || BUFFER_SIZE < 1)
-		return (NULL);
 	line = NULL;
 	while (!ft_found_newline(line))
 	{
-		if (!*buf)
+		if (!(*(buf[fd])))
 		{
-			bytes_read = read(fd, buf, BUFFER_SIZE);
+			bytes_read = read(fd, buf[fd], BUFFER_SIZE);
 			if (bytes_read == -1)
 				return (free(line), NULL);
 			if (bytes_read == 0)
 				break ;
 		}
-		line = ft_addbytes(line, buf);
+		line = ft_writeline(line, buf[fd]);
 		if (!line)
 			return (NULL);
-		ft_bytemove(buf);
+		ft_removeline(buf[fd]);
 	}
 	return (line);
 }
@@ -94,10 +89,10 @@ char	*get_next_line(int fd)
 
 int	main(int argc, char **argv)
 {
-	int		fd;
+	(void) argc;
+	int	fd;
 	char	*line;
 
-	(void)argc;
 	fd = open(argv[1], O_RDONLY);
 	while (line = get_next_line(fd))
 	{
