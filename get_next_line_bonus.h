@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 00:36:23 by jesusoncrac       #+#    #+#             */
-/*   Updated: 2025/05/10 00:40:51 by jesusoncrac      ###   ########.fr       */
+/*   Updated: 2025/05/11 11:20:04 by jesusoncrac      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,6 @@ int		ft_found_newline(char *line);
 int		ft_nlen(char *str);
 char	*get_next_line(int fd);
 char	*ft_writeline(char *line, char *buf);
-void	ft_removeline(char *line);
+void	ft_removeline(char *buf);
 
 #endif

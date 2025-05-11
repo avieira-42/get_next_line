@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 12:26:14 by avieira-          #+#    #+#             */
-/*   Updated: 2025/05/10 00:31:35 by jesusoncrac      ###   ########.fr       */
+/*   Updated: 2025/05/11 11:20:54 by jesusoncrac      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int		ft_strlen(char *str);
 int		ft_found_newline(char *line);
 int		ft_nlen(char *str);
 char	*get_next_line(int fd);
-char	*ft_addbytes(char *stash, char *buf);
-void	ft_bytemove(char *buf);
+char	*ft_writeline(char *line, char *buf);
+void	ft_removeline(char *buf);
 
 #endif

@@ -6,29 +6,29 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 17:22:17 by jesusoncrac       #+#    #+#             */
-/*   Updated: 2025/05/10 01:11:58 by jesusoncrac      ###   ########.fr       */
+/*   Updated: 2025/05/11 11:19:33 by jesusoncrac      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-void	ft_removeline(char *line)
+void	ft_removeline(char *buf)
 {
 	int		i;
 	char	*ptr;
 
 	i = 0;
-	ptr = line;
-	while (line[i] != '\n' && line[i])
+	ptr = buf;
+	while (buf[i] != '\n' && buf[i])
 		i++;
 	ptr += i;
-	if (line[i] == '\n')
+	if (buf[i] == '\n')
 		ptr++;
 	i = 0;
 	while (*ptr)
-		line[i++] = *(ptr++);
-	while (line[i])
-		line[i] = '\0';
+		buf[i++] = *(ptr++);
+	while (buf[i])
+		buf[i] = '\0';
 }
 
 char	*ft_writeline(char *line, char *buf)
