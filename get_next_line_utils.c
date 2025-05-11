@@ -6,11 +6,22 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 22:11:13 by avieira-          #+#    #+#             */
-/*   Updated: 2025/05/10 00:18:31 by jesusoncrac      ###   ########.fr       */
+/*   Updated: 2025/05/11 17:25:57 by jesusoncrac      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+int	ft_found_newline(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line && line[i])
+		if (line[i++] == '\n')
+			return (1);
+	return (0);
+}
 
 int	ft_nlen(char *str)
 {

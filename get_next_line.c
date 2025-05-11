@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:49:43 by avieira-          #+#    #+#             */
-/*   Updated: 2025/05/11 11:22:58 by jesusoncrac      ###   ########.fr       */
+/*   Updated: 2025/05/11 17:28:13 by jesusoncrac      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,6 @@ void	ft_removeline(char *buf)
 		buf[i++] = *(ptr++);
 	while (buf[i])
 		buf[i++] = '\0';
-}
-
-int	ft_found_newline(char *line)
-{
-	int	i;
-
-	i = 0;
-	while (line && line[i])
-		if (line[i++] == '\n')
-			return (1);
-	return (0);
 }
 
 char	*ft_writeline(char *line, char *buf)
