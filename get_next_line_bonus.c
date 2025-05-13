@@ -6,11 +6,11 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 17:22:17 by jesusoncrac       #+#    #+#             */
-/*   Updated: 2025/05/11 17:32:01 by jesusoncrac      ###   ########.fr       */
+/*   Updated: 2025/05/13 23:50:48 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 void	ft_removeline(char *buf)
 {
@@ -52,29 +52,47 @@ char	*ft_writeline(char *line, char *buf)
 	return (free(line), new_line);
 }
 
-char	*get_next_line(int fd)
+char	*ft_readline(int fd, char *buf, char *line)
 {
-	ssize_t			bytes_read;
-	char			*line;
-	static char		buf[1024][BUFFER_SIZE + 1];
+	ssize_t		bytes_read;
 
-	if (fd < 0 || BUFFER_SIZE < 1)
-		return (NULL);
-	line = NULL;
 	while (!ft_found_newline(line))
 	{
-		if (!*buf[fd])
+		if (!*buf)
 		{
-			bytes_read = read(fd, buf[fd], BUFFER_SIZE);
+			bytes_read = read(fd, buf, BUFFER_SIZE);
 			if (bytes_read == -1)
 				return (free(line), NULL);
 			if (bytes_read == 0)
 				break ;
 		}
-		line = ft_writeline(line, buf[fd]);
+		line = ft_writeline(line, buf);
 		if (!line)
 			return (NULL);
-		ft_removeline(buf[fd]);
+		ft_removeline(buf);
+	}
+	return (line);
+}
+
+char	*get_next_line(int fd)
+{
+	char			*line;
+	static char		*buf[1024];
+
+	line = NULL;
+	if (fd < 0 || BUFFER_SIZE < 1 || fd > 1024)
+		return (NULL);
+	if (!buf[fd])
+	{
+		buf[fd] = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+		if (!buf[fd])
+			return (NULL);
+	}
+	line = ft_readline(fd, buf[fd], line);
+	if (!line || !*line)
+	{
+		free(buf[fd]);
+		buf[fd] = NULL;
 	}
 	return (line);
 }
